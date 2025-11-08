@@ -4,7 +4,7 @@ repository: https://github.com/felangel/bloc/tree/master/bricks/flutter_bloc_fea
 version: 0.4.0
 
 environment:
-  mason: ^0.1.0
+  mason: ^0.1.1
 
 vars:
   name:

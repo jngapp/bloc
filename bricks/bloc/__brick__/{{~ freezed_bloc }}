@@ -6,9 +6,12 @@ part '{{name.snakeCase()}}_state.dart';
 part '{{name.snakeCase()}}_bloc.freezed.dart';
 
 class {{name.pascalCase()}}Bloc extends Bloc<{{name.pascalCase()}}Event, {{name.pascalCase()}}State> {
-  {{name.pascalCase()}}Bloc() : super(const {{name.pascalCase()}}State.initial()) {
-    on<{{name.pascalCase()}}Event>((event, emit) {
-      // TODO: implement event handler
+  {{name.pascalCase()}}Bloc() : super(const {{name.pascalCase()}}State(status: {{name.pascalCase()}}LoadStatus.initial)) {
+    on<{{name.pascalCase()}}Event>((event, emit) async {
+        Future<void> loaded() async {
+
+        }
+        await event.when(loaded: loaded);
     });
   }
 }

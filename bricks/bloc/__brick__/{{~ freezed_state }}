@@ -1,6 +1,14 @@
 part of '{{name.snakeCase()}}_bloc.dart';
-
+enum {{name.pascalCase()}}LoadStatus {
+  initial,
+  loading,
+  success,
+  error,
+}
 @freezed
-class {{name.pascalCase()}}State with _${{name.pascalCase()}}State {
-  const factory {{name.pascalCase()}}State.initial() = _Initial;
+abstract class {{name.pascalCase()}}State with _${{name.pascalCase()}}State {
+  const factory {{name.pascalCase()}}State({
+    @Default({{name.pascalCase()}}LoadStatus.initial) {{name.pascalCase()}}LoadStatus status,
+    String? message,
+  }) = _{{name.pascalCase()}}State;
 }

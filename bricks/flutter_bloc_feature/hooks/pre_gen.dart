@@ -23,15 +23,26 @@ final brickVersions = {
   BlocType.replay_cubit: '^0.3.0',
 };
 
+final brickPaths = {
+  BlocType.bloc: 'C:\\Repo\\Github\\flutter\\packages\\bloc\\bricks\\bloc',
+  BlocType.cubit: 'C:\\Repo\\Github\\flutter\\packages\\bloc\\bricks\\cubit',
+  BlocType.hydrated_bloc: 'C:\\Repo\\Github\\flutter\\packages\\bloc\\bricks\\hydrated_bloc',
+  BlocType.hydrated_cubit: 'C:\\Repo\\Github\\flutter\\packages\\bloc\\bricks\\hydrated_cubit',
+  BlocType.replay_bloc: 'C:\\Repo\\Github\\flutter\\packages\\bloc\\bricks\\replay_bloc',
+  BlocType.replay_cubit: 'C:\\Repo\\Github\\flutter\\packages\\bloc\\bricks\\replay_cubit',
+};
+
 Future<void> run(HookContext context) async {
   final blocType = _blocTypeFromContext(context);
   final progress = context.logger.progress('Making brick ${blocType.name}');
   final name = context.vars['name'] as String;
   final style = context.vars['style'] as String;
-  final brick = Brick.version(
-    name: blocType.name,
-    version: brickVersions[blocType]!,
-  );
+  // final brick = Brick.version(
+  //   name: blocType.name,
+  //   version: brickVersions[blocType]!,
+  // );
+  final brick = Brick.path(
+    brickPaths[blocType]!);
   final generator = await MasonGenerator.fromBrick(brick);
   final blocDirectoryName = blocType.toDirectoryName();
   final directory = Directory(

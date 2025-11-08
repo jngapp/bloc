@@ -1,6 +1,14 @@
     return BlocBuilder<{{name.pascalCase()}}Bloc, {{name.pascalCase()}}State>(
       builder: (context, state) {
-        // TODO: return correct widget based on the state.
-        return const SizedBox();
+        switch (state.status) {
+          case {{name.pascalCase()}}LoadStatus.initial:
+            return const Center(child: Text('Initial'),);
+          case {{name.pascalCase()}}LoadStatus.loading:
+            return const Center(child: Text('Loading...'),);
+          case {{name.pascalCase()}}LoadStatus.success:
+            return const Center(child: Text('Success'),);
+          case {{name.pascalCase()}}LoadStatus.error:
+            return Center(child: Text('Error: ${state.message}'),);
+        }
       },
     );
