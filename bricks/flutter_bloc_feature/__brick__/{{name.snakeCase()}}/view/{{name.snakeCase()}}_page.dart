@@ -4,7 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../{{name.snakeCase()}}.dart';
 
 class {{name.pascalCase()}}Page extends StatelessWidget {
-  const {{name.pascalCase()}}Page({super.key});
+  {{#isMultiPage}}
+  final {{repoDataClass}} value;
+  {{/isMultiPage}}
+  const {{name.pascalCase()}}Page({{#isMultiPage}}this.value,{{/isMultiPage}}{super.key});
 
   @override
   Widget build(BuildContext context) {

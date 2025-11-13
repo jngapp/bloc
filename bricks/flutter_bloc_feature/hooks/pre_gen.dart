@@ -37,6 +37,8 @@ Future<void> run(HookContext context) async {
   final progress = context.logger.progress('Making brick ${blocType.name}');
   final name = context.vars['name'] as String;
   final style = context.vars['style'] as String;
+  final isMultiPage = context.vars['isMultiPage'] as bool;
+  final repoDataClass = context.vars['repoDataClass'] as String;
   // final brick = Brick.version(
   //   name: blocType.name,
   //   version: brickVersions[blocType]!,
@@ -49,7 +51,8 @@ Future<void> run(HookContext context) async {
     path.join(Directory.current.path, name.snakeCase, blocDirectoryName),
   );
   final target = DirectoryGeneratorTarget(directory);
-  var vars = <String, dynamic>{'name': name, 'style': style};
+
+  var vars = <String, dynamic>{'name': name, 'style': style, 'isMultiPage': isMultiPage, 'repoDataClass': repoDataClass};
   await generator.hooks.preGen(vars: vars, onVarsChanged: (v) => vars = v);
   final files = await generator.generate(
     target,
@@ -57,11 +60,28 @@ Future<void> run(HookContext context) async {
     logger: context.logger,
     fileConflictResolution: FileConflictResolution.overwrite,
   );
+
   await generator.hooks.postGen(vars: vars);
   final blocExport =
       './$blocDirectoryName/${name.snakeCase}_$blocDirectoryName.dart';
   progress.complete('Made brick ${blocType.name}');
   context.logger.logFilesGenerated(files.length);
+
+
+  if(isMultiPage) {
+    final repoDirectory = Directory(path.join(Directory.current.path, name.snakeCase, 'repo'));
+    final repoGenerator = await MasonGenerator.fromBrick(Brick.path('C:\\Repo\\Github\\flutter\\packages\\bloc\\bricks\\bloc_repo'));
+    final repoTarget = DirectoryGeneratorTarget(repoDirectory);
+    final repoFiles = await repoGenerator.generate(
+      repoTarget,
+      vars: vars,
+      logger: context.logger,
+      fileConflictResolution: FileConflictResolution.overwrite,
+    );
+    context.logger.logFilesGenerated(repoFiles.length);
+  }
+
+
   context.vars = {
     ...context.vars,
     'bloc_export': blocExport,

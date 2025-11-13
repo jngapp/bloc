@@ -33,3 +33,13 @@ vars:
       - basic
       - equatable
       - freezed
+  isMultiPage:
+    type: boolean
+    description: Add a repository class to share between multiple pages.
+    default: false
+    prompt: Is the feature a multi-page feature?
+  repoDataClass:
+    type: string
+    description: The name of the class for the repo data.
+    default: AppData
+    prompt: What is the name of the repo data class?

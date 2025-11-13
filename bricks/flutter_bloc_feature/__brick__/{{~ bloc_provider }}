@@ -1,4 +1,8 @@
     return BlocProvider(
-      create: (_) => {{name.pascalCase()}}Bloc(),
+      create: (_) => {{name.pascalCase()}}Bloc
+      ({{#isMultiPage}}
+      {{name.pascalCase()}}Repo(value)
+      {{/isMultiPage}})
+      ..add({{name.pascalCase()}}Event.loaded()),
       child: const {{name.pascalCase()}}View(),
     );

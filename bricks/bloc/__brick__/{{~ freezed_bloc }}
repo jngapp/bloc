@@ -1,15 +1,31 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+{{#isMultiPage}}
+import '../repo/{{name.snakeCase()}}_repo.dart';
+{{/isMultiPage}}
 
 part '{{name.snakeCase()}}_event.dart';
 part '{{name.snakeCase()}}_state.dart';
 part '{{name.snakeCase()}}_bloc.freezed.dart';
 
 class {{name.pascalCase()}}Bloc extends Bloc<{{name.pascalCase()}}Event, {{name.pascalCase()}}State> {
-  {{name.pascalCase()}}Bloc() : super(const {{name.pascalCase()}}State(status: {{name.pascalCase()}}LoadStatus.initial)) {
+  {{#isMultiPage}}
+  final {{name.pascalCase()}}Repo repo;
+  {{/isMultiPage}}
+  {{name.pascalCase()}}Bloc({{#isMultiPage}}this.repo{{/isMultiPage}}) : super(const {{name.pascalCase()}}State(status: {{name.pascalCase()}}LoadStatus.initial)) {
     on<{{name.pascalCase()}}Event>((event, emit) async {
         Future<void> loaded() async {
-
+            {{#isMultiPage}}
+            try {
+                await emit.forEach(
+                  repo.stream,
+                  onData: (data) => state.copyWith(status: {{name.pascalCase()}}LoadStatus.success),
+                  onError: (data, error) => state.copyWith(status: {{name.pascalCase()}}LoadStatus.error),
+                );
+            } catch (e) {
+                emit(state.copyWith(status: {{name.pascalCase()}}LoadStatus.error));
+            }
+            {{/isMultiPage}}
         }
         await event.when(loaded: loaded);
     });
