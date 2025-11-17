@@ -18,7 +18,7 @@ class {{name.pascalCase()}}Bloc extends Bloc<{{name.pascalCase()}}Event, {{name.
             {{#isMultiPage}}
             try {
                 await emit.forEach(
-                  repo.stream,
+                  repo.getStream(),
                   onData: (data) => state.copyWith(status: {{name.pascalCase()}}LoadStatus.success),
                   onError: (data, error) => state.copyWith(status: {{name.pascalCase()}}LoadStatus.error),
                 );
